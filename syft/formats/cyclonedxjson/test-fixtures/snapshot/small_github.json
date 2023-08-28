@@ -1,0 +1,125 @@
+{
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.4",
+  "serialNumber": "urn:uuid:411dafd2-c29f-491a-97d7-e97de5bc2289",
+  "version": 1,
+  "metadata": {
+    "timestamp": "2020-08-02T21:21:17Z",
+    "tools": [{
+      "vendor": "CycloneDX",
+      "name": "CycloneDX Maven plugin TEST KATIE 3",
+      "version": "2.0.2",
+      "hashes": [
+        {
+          "alg": "MD5",
+          "content": "9a7ed39bba6c03f85a88fe114e24e4ad"
+        },
+        {
+          "alg": "SHA-1",
+          "content": "04b39fce560f8a9609e5b5db6e605fc2ba2c5a42"
+        },
+        {
+          "alg": "SHA-256",
+          "content": "78522e385d01fc74cb6410abb22b2b0ed9b47c1124635d955179402928820b43"
+        },
+        {
+          "alg": "SHA-384",
+          "content": "aff816bf691e4490d4e977386c21abaceb97b7ce502d88c35c52cfdb7a7e50310ecc70019582d8247a99626bc98ad16b"
+        },
+        {
+          "alg": "SHA-512",
+          "content": "500bd8dd0b821ef84c57643324e1d0eea1111aa9c7913bc35cb812f577128867c74c698b59fb603b358cc5545a708feb8dfca223023f81597658053e5317dd1a"
+        },
+        {
+          "alg": "SHA3-256",
+          "content": "9e45261eff969396b6a3e97a1ad65dced304f77765655c9a72a2904caa137a1e"
+        },
+        {
+          "alg": "SHA3-384",
+          "content": "fea472f4c2bdee7df208ad3d6a76125ce282a250eb960bc2171297a3ae2e4232b61540132b71b399e8ac6b9d0228113f"
+        },
+        {
+          "alg": "SHA3-512",
+          "content": "6ed81f58d9039e56d393165bd26c998584e364f7975e33f5c3008ac10d67ed190edcd196c5ce1554e23c4e1271f8aed631e07c3ea0de59a3457891d188e71b67"
+        }
+      ]
+    }],
+    "component": {
+      "type": "application",
+      "bom-ref": "pkg:maven/org.keycloak/keycloak-parent@10.0.2",
+      "group": "org.keycloak",
+      "name": "keycloak-parent",
+      "version": "10.0.2",
+      "licenses": [{"license": {"id": "Apache-2.0"}}],
+      "purl": "pkg:maven/org.keycloak/keycloak-parent@10.0.2"
+    }
+  },
+  "components": [
+    {
+      "type": "library",
+      "bom-ref": "pkg:maven/com.sun.activation/jakarta.activation@1.2.1?type=jar",
+      "publisher": "Eclipse Foundation",
+      "group": "com.sun.activation",
+      "name": "jakarta.activation",
+      "version": "1.2.1",
+      "description": "${project.name}",
+      "hashes": [
+        {
+          "alg": "MD5",
+          "content": "dc519b1f09bbaf9274ea5da358a00110"
+        },
+        {
+          "alg": "SHA-1",
+          "content": "8013606426a73d8ba6b568370877251e91a38b89"
+        },
+        {
+          "alg": "SHA-256",
+          "content": "d84d4ba8b55cdb7fdcbb885e6939386367433f56f5ab8cfdc302a7c3587fa92b"
+        },
+        {
+          "alg": "SHA-384",
+          "content": "565abccae0860e5c65696b62ca47786c1a9fb7a596a3d9f01c5ef072bf848b69b77c3d0381ff4f27ad2cb522367d9ed6"
+        },
+        {
+          "alg": "SHA-512",
+          "content": "56243d42d0b4579ae8dcebb3bb9c0807d54f68e37af1a43c1379d9878fda8cf2d39f4fdfacb480dc1d58bae357c9895da6a19dd5d01b4514b01f2aa9f8701a7c"
+        },
+        {
+          "alg": "SHA3-256",
+          "content": "62a822af266ebc1b1f53a47da558106a59fc8c7f6fecf4f11cc22d51eae65ec9"
+        },
+        {
+          "alg": "SHA3-384",
+          "content": "8141d28cc6a3404f7c77e3688cf70b17ddfef050bd83be016ff5aac7e8f9e983387f4f8aafa2bd98afd7b53cf7b662d1"
+        },
+        {
+          "alg": "SHA3-512",
+          "content": "ac0d51928a89ad515a92a30f2b4302ac2431fee65e8bc120415518c7c19b1aad2ef2944c57d355546082cc21ccdcd2ba2a887516cb423e3b7cd1dff8180ec072"
+        }
+      ],
+      "licenses": [{"license": {
+        "name": "EDL 1.0",
+        "url": "http://www.eclipse.org/org/documents/edl-v10.php"
+      }}],
+      "purl": "pkg:maven/com.sun.activation/jakarta.activation@1.2.1?type=jar",
+      "externalReferences": [
+        {
+          "type": "issue-tracker",
+          "url": "https://github.com/eclipse-ee4j/jaf/issues/"
+        },
+        {
+          "type": "vcs",
+          "url": "https://github.com/eclipse-ee4j/jaf"
+        },
+        {
+          "type": "website",
+          "url": "https://www.eclipse.org"
+        },
+        {
+          "type": "mailing-list",
+          "url": "https://dev.eclipse.org/mhonarc/lists/jakarta.ee-community/"
+        }
+      ]
+    }
+	]
+}
