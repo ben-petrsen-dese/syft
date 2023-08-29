@@ -68,6 +68,10 @@ func hasMetadata(p pkg.Package) bool {
 
 func decodeComponent(c *cyclonedx.Component) *pkg.Package {
 	values := map[string]string{}
+	println("Properties")
+	for _, p := range *c.ExternalReferences {
+		println(p.URL)
+	}
 	if c.Properties != nil {
 		for _, p := range *c.Properties {
 			values[p.Name] = p.Value
@@ -75,19 +79,29 @@ func decodeComponent(c *cyclonedx.Component) *pkg.Package {
 	}
 
 	p := &pkg.Package{
-		Name:      c.Name,
-		Version:   c.Version,
-		Locations: decodeLocations(values),
-		Licenses:  pkg.NewLicenseSet(decodeLicenses(c)...),
-		CPEs:      decodeCPEs(c),
-		PURL:      c.PackageURL,
+		Name:         c.Name,
+		Version:      c.Version,
+		Locations:    decodeLocations(values),
+		Licenses:     pkg.NewLicenseSet(decodeLicenses(c)...),
+		CPEs:         decodeCPEs(c),
+		PURL:         c.PackageURL,
+		MetadataType: pkg.MetadataType(pkg.PythonPackageMetadataType),
 	}
+	print("Hello: ")
+	println(p.Name)
 
 	common.DecodeInto(p, values, "syft:package", CycloneDXFields)
+
+	print("Wolrd: ")
+	println(p.MetadataType)
+	println(c.Properties)
 
 	p.MetadataType = pkg.CleanMetadataType(p.MetadataType)
 
 	p.Metadata = decodePackageMetadata(values, c, p.MetadataType)
+
+	// print("Wolrd: ")
+	// println(p.MetadataType)
 
 	if p.Type == "" {
 		p.Type = pkg.TypeFromPURL(p.PURL)
@@ -110,24 +124,41 @@ func decodeLocations(vals map[string]string) file.LocationSet {
 }
 
 func decodePackageMetadata(vals map[string]string, c *cyclonedx.Component, typ pkg.MetadataType) interface{} {
-	if typ != "" && c.Properties != nil {
+	println("KIRB")
+	println(vals)
+	for key, val := range vals {
+		println(key, ":", val)
+	}
+	println(typ)
+	println(c.Properties)
+	println(c.Publisher)
+	if typ != "" { //} && c.Properties != nil {
+		println("SOMETHING")
 		metaTyp, ok := pkg.MetadataTypeByName[typ]
+		println(metaTyp)
+		println("ok")
+		println(ok)
 		if !ok {
 			return nil
 		}
 		metaPtrTyp := reflect.PtrTo(metaTyp)
+		println("metaPtrTyp")
 		metaPtr := common.Decode(metaPtrTyp, vals, "syft:metadata", CycloneDXFields)
 
+		println("AGAIN")
 		// Map all explicit metadata properties
 		decodeAuthor(c.Author, metaPtr)
 		decodeGroup(c.Group, metaPtr)
 		decodePublisher(c.Publisher, metaPtr)
 		decodeDescription(c.Description, metaPtr)
+		println("BEN")
+		// println(c.ExternalReferences)
+		println(metaPtr)
 		decodeExternalReferences(c, metaPtr)
 
 		// return the actual interface{} -> struct ... not interface{} -> *struct
 		return common.PtrToStruct(metaPtr)
 	}
-
+	println("RETURNING NIL")
 	return nil
 }

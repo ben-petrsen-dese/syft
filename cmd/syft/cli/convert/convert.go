@@ -61,6 +61,7 @@ func Run(_ context.Context, app *config.Application, args []string) error {
 }
 
 func execWorker(reader io.Reader, writer sbom.Writer) <-chan error {
+	println("Executing convert worker")
 	errs := make(chan error)
 	go func() {
 		defer close(errs)

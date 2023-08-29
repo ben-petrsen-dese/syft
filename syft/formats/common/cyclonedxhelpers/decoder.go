@@ -40,10 +40,27 @@ func GetDecoder(format cyclonedx.BOMFileFormat) sbom.Decoder {
 			Components: &[]cyclonedx.Component{},
 		}
 		err := cyclonedx.NewBOMDecoder(reader, format).Decode(bom)
+		// ============================================================
+		// print("BOM COMP: ", *bom.Components)
+		// for _, user := range *bom.Components {
+		// 	println("newrefs")
+		// 	// println(user.ExternalReferences)
+		// 	// val, ok := *user.ExternalReferences
+		// 	if user.ExternalReferences != nil {
+		// 		for _, refer := range *user.ExternalReferences {
+		// 			println(refer.URL)
+		// 		}
+		// 	}
+		// }
+		// ============================================================
 		if err != nil {
 			return nil, err
 		}
 		s, err := ToSyftModel(bom)
+		for sbom := range s.Artifacts.Packages.Enumerate() {
+			println("sbom metadata")
+			println(sbom.MetadataType)
+		}
 		if err != nil {
 			return nil, err
 		}
@@ -55,7 +72,24 @@ func ToSyftModel(bom *cyclonedx.BOM) (*sbom.SBOM, error) {
 	if bom == nil {
 		return nil, fmt.Errorf("no content defined in CycloneDX BOM")
 	}
+	// print(*bom.Components)
+	// println("syftmodel")
+	// for i := range *bom.Components {
+	// 	print(i)
+	// 	// component := *bom.Components[i]
+	// 	// print(component.ExternalReferences)
+	// }
 
+	for _, user := range *bom.Components {
+		println("newrefs")
+		// println(user.ExternalReferences)
+		// val, ok := *user.ExternalReferences
+		if user.ExternalReferences != nil {
+			for _, refer := range *user.ExternalReferences {
+				println(refer.URL)
+			}
+		}
+	}
 	s := &sbom.SBOM{
 		Artifacts: sbom.Artifacts{
 			Packages:          pkg.NewCollection(),
@@ -64,6 +98,19 @@ func ToSyftModel(bom *cyclonedx.BOM) (*sbom.SBOM, error) {
 		Source:     extractComponents(bom.Metadata),
 		Descriptor: extractDescriptor(bom.Metadata),
 	}
+	// print("Ben lol")
+	// print(pkg.NewRelationships(pkg.NewCollection()))
+	// package1 := pkg.Package{
+	// 	Name: "newpackage",
+	// 	PURL: "testurl",
+	// }
+	// // print(package1.String())
+	// pkg.NewCollection().Add(package1)
+	// s.Artifacts.Packages.Add(package1)
+
+	// for x := range s.Artifacts.Packages.Enumerate() {
+	// 	print("BEN", x.Name)
+	// }
 
 	idMap := make(map[string]interface{})
 
@@ -71,7 +118,13 @@ func ToSyftModel(bom *cyclonedx.BOM) (*sbom.SBOM, error) {
 		return nil, err
 	}
 
+	// for x := range s.Artifacts.Packages.Enumerate() {
+	// 	println("FOUNDIT")
+	// 	print(x.PURL)
+	// }
+
 	collectRelationships(bom, s, idMap)
+	// print(s.Descriptor.Name)
 
 	return s, nil
 }
@@ -92,6 +145,12 @@ func collectPackages(component *cyclonedx.Component, s *sbom.SBOM, idMap map[str
 	case cyclonedx.ComponentTypeContainer:
 	case cyclonedx.ComponentTypeApplication, cyclonedx.ComponentTypeFramework, cyclonedx.ComponentTypeLibrary:
 		p := decodeComponent(component)
+		// println("component: ", component.Properties)
+		// for _, x := range *component.Properties {
+		// 	// println("FOUNDIT")
+		// 	print(x.Name)
+		// 	println(x.Value)
+		// }
 		idMap[component.BOMRef] = p
 		syftID := extractSyftPacakgeID(component.BOMRef)
 		if syftID != "" {

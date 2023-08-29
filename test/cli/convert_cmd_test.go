@@ -23,7 +23,9 @@ func TestConvertCmd(t *testing.T) {
 		t.Run(fmt.Sprintf("from %s to %s", test.from, test.to), func(t *testing.T) {
 			sbomArgs := []string{"dir:./test-fixtures/image-pkg-coverage", "-o", test.from}
 			cmd, stdout, stderr := runSyft(t, nil, sbomArgs...)
+			println(sbomArgs[len(sbomArgs)-1])
 			if cmd.ProcessState.ExitCode() != 0 {
+				t.Log("ERROR CODE: ", cmd.ProcessState.ExitCode())
 				t.Log("STDOUT:\n", stdout)
 				t.Log("STDERR:\n", stderr)
 				t.Log("COMMAND:", strings.Join(cmd.Args, " "))

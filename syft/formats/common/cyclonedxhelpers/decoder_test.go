@@ -201,6 +201,7 @@ func Test_decode(t *testing.T) {
 			},
 		},
 	}
+
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
 			sbom, err := ToSyftModel(&test.input)
@@ -269,6 +270,12 @@ func Test_relationshipDirection(t *testing.T) {
 				Name:       "package-1",
 				Version:    "1.0.1",
 				PackageURL: "pkg:some/package-1@1.0.1?arch=arm64&upstream=upstream1&distro=alpine-1",
+				ExternalReferences: &[]cyclonedx.ExternalReference{{
+					URL:     "testingpurlouput",  //`json:"url" xml:"url"`
+					Comment: "string",            //`json:"comment,omitempty" xml:"comment,omitempty"`
+					Hashes:  nil,                 //`json:"hashes,omitempty" xml:"hashes>hash,omitempty"`
+					Type:    cyclonedx.ERTypeBOM, //`json:"type" xml:"type,attr"`
+				}},
 			},
 			{
 				BOMRef:     "p2",
@@ -276,6 +283,12 @@ func Test_relationshipDirection(t *testing.T) {
 				Name:       "package-2",
 				Version:    "2.0.2",
 				PackageURL: "pkg:some/package-2@2.0.2?arch=arm64&upstream=upstream1&distro=alpine-1",
+				ExternalReferences: &[]cyclonedx.ExternalReference{{
+					URL:     "tested another ouput", //`json:"url" xml:"url"`
+					Comment: "string",               //`json:"comment,omitempty" xml:"comment,omitempty"`
+					Hashes:  nil,                    //`json:"hashes,omitempty" xml:"hashes>hash,omitempty"`
+					Type:    cyclonedx.ERTypeBOM,    //`json:"type" xml:"type,attr"`
+				}},
 			},
 		},
 		Dependencies: &[]cyclonedx.Dependency{
@@ -284,6 +297,16 @@ func Test_relationshipDirection(t *testing.T) {
 				Dependencies: &[]string{"p2"},
 			},
 		}}
+	// for _, user := range *cyclonedx_bom.Components {
+	// 	print("external refs")
+	// 	// print(user.ExternalReferences)
+	// 	// val, ok := *user.ExternalReferences
+	// 	if user.ExternalReferences != nil {
+	// 		for _, refer := range *user.ExternalReferences {
+	// 			print(refer.URL)
+	// 		}
+	// 	}
+	// }
 	sbom, err := ToSyftModel(&cyclonedx_bom)
 	assert.Nil(t, err)
 	assert.Len(t, sbom.Relationships, 1)
@@ -332,7 +355,10 @@ func Test_missingComponentsDecode(t *testing.T) {
 	bomBytes, _ := json.Marshal(&bom)
 	decode := GetDecoder(cyclonedx.BOMFileFormatJSON)
 
+	// println(bomBytes)
 	_, err := decode(bytes.NewReader(bomBytes))
+	// println("x:", x.Artifacts.Packages)
+	// println("t:", t)
 
 	assert.NoError(t, err)
 }

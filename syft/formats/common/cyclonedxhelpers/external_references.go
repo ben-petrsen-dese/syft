@@ -98,9 +98,12 @@ func toCycloneDXAlgorithm(algorithm string) cyclonedx.HashAlgorithm {
 }
 
 func decodeExternalReferences(c *cyclonedx.Component, metadata interface{}) {
+	println("EXTERNAL REFS DECODE")
+
 	if c.ExternalReferences == nil {
 		return
 	}
+	println("HI: ", c.ExternalReferences)
 	switch meta := metadata.(type) {
 	case *pkg.ApkMetadata:
 		meta.URL = refURL(c, cyclonedx.ERTypeDistribution)
@@ -131,6 +134,9 @@ func decodeExternalReferences(c *cyclonedx.Component, metadata interface{}) {
 		}
 		meta.DirectURLOrigin.URL = refURL(c, cyclonedx.ERTypeVCS)
 		meta.DirectURLOrigin.CommitID = strings.TrimPrefix(refComment(c, cyclonedx.ERTypeVCS), "commit: ")
+		println("metadata: ", meta.DirectURLOrigin.URL)
+	default:
+		println("metadata: ", meta)
 	}
 }
 
